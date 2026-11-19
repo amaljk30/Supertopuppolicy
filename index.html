@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Super Top-Up Medicare Policy (STUMP) — Premium Calculator & Product Guide</title>
+  <style>
+    :root {
+      --primary: #0b3c78;
+      --primary-dark: #072852;
+      --accent: #0284c7;
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --border: #dce3ee;
+      --text: #1e293b;
+      --muted: #64748b;
+      --green-bg: #ecfdf5;
+      --green-text: #065f46;
+      --green-border: #a7f3d0;
+      --amber-bg: #fffbeb;
+      --amber-text: #92400e;
+      --amber-border: #fde68a;
+      --red-bg: #fef2f2;
+      --red-text: #991b1b;
+      --red-border: #fecaca;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.5; }
+    header { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: #fff; padding: 16px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+    .header-inner { max-width: 1180px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+    .brand h1 { font-size: 1.25rem; font-weight: 700; }
+    .brand p { font-size: 0.82rem; opacity: 0.9; }
+    .badges { display: flex; gap: 8px; flex-wrap: wrap; }
+    .badge { font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,0.16); }
+    .badge-gst { background: #10b981; color: #fff; }
+    .tabs { max-width: 1180px; margin: 16px auto 0; padding: 0 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .tab-btn { padding: 10px 18px; border: 1px solid var(--border); background: #fff; color: var(--text); border-radius: 8px 8px 0 0; font-weight: 600; cursor: pointer; font-size: 0.92rem; }
+    .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .container { max-width: 1180px; margin: 0 auto 40px; padding: 0 16px; }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: 0 10px 10px 10px; padding: 20px; box-shadow: 0 2px 10px rgba(15,23,42,0.04); }
+    .hidden { display: none !important; }
+    .preset-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .preset-bar span { font-size: 0.82rem; font-weight: 600; color: var(--muted); }
+    .btn { padding: 7px 12px; border-radius: 6px; border: 1px solid var(--border); background: #f8fafc; color: var(--text); font-size: 0.82rem; font-weight: 600; cursor: pointer; }
+    .btn:hover { background: #e2e8f0; }
+    .btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .btn-danger { background: var(--red-bg); color: var(--red-text); border-color: var(--red-border); }
+    .grid-2 { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
+    @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+    .section-title { font-size: 1rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 12px; margin-bottom: 14px; }
+    .field label { display: block; font-size: 0.77rem; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
+    .field select, .field input { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.88rem; background: #fff; }
+    .check-row { display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 0.83rem; }
+    .member-card { border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 12px; background: #fafcff; }
+    .member-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px; }
+    .member-head strong { color: var(--primary); font-size: 0.92rem; }
+    .alert { padding: 10px 12px; border-radius: 6px; font-size: 0.81rem; margin-top: 8px; border: 1px solid; }
+    .alert-ok { background: var(--green-bg); color: var(--green-text); border-color: var(--green-border); }
+    .alert-warn { background: var(--amber-bg); color: var(--amber-text); border-color: var(--amber-border); }
+    .alert-err { background: var(--red-bg); color: var(--red-text); border-color: var(--red-border); }
+    .summary-card { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 18px; position: sticky; top: 16px; }
+    .total-box { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; padding: 16px; border-radius: 8px; text-align: center; margin-bottom: 14px; }
+    .total-box .lbl { font-size: 0.8rem; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px; }
+    .total-box .amt { font-size: 2rem; font-weight: 800; margin: 4px 0; }
+    .total-box .sub { font-size: 0.78rem; color: #a7f3d0; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.81rem; margin-bottom: 12px; }
+    th, td { padding: 7px 5px; border-bottom: 1px solid var(--border); text-align: left; }
+    th { color: var(--muted); font-weight: 600; }
+    .num { text-align: right; font-variant-numeric: tabular-nums; }
+    .faq-search { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; margin-bottom: 12px; }
+    .faq-item { border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 10px; background: #fff; }
+    .faq-q { font-weight: 700; color: var(--primary); margin-bottom: 6px; font-size: 0.95rem; }
+    .faq-a { font-size: 0.87rem; color: #334155; }
+    .tool-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <h1>United India Insurance — Super Top-Up Medicare Policy (STUMP)</h1>
+      <p>Annual Aggregate Deductible Health Cover • Individual & Floater Calculator • Product Guide (UIN: UIIHLIP26049V042526)</p>
+    </div>
+    <div class="badges">
+      <span class="badge badge-gst">0% GST (Exempt)</span>
+      <span class="badge">Pan-India Single Zone (0% Co-pay)</span>
+    </div>
+  </div>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" id="tabBtnCalc" onclick="switchTab('calc')">1. Premium Calculator</button>
+  <button class="tab-btn" id="tabBtnFaq" onclick="switchTab('faq')">2. Product Doubts & Claim Simulator</button>
+</div>
+
+<div class="container">
+  <!-- TAB 1: CALCULATOR -->
+  <div id="panelCalc" class="panel">
+    <div class="preset-bar">
+      <span>Prospectus Presets:</span>
+      <button class="btn" onclick="loadPreset(1)">Illustration 1 (Floater ₹5L/₹5L = ₹2,508)</button>
+      <button class="btn" onclick="loadPreset(2)">Illustration 1 (Individual ₹5L/₹5L = ₹4,370)</button>
+      <button class="btn" onclick="loadPreset(3)">Illustration 2 (2 Adults 59 & 56 = ₹3,052)</button>
+      <button class="btn btn-primary" onclick="calculatePremium()">Calculate Premium</button>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <div class="section-title">Policy Configuration</div>
+        <div class="form-grid">
+          <div class="field">
+            <label>Basis of Cover</label>
+            <select id="coverBasis" onchange="renderMembers(); calculatePremium();">
+              <option value="floater">Family Floater Basis (Self, Spouse, Children)</option>
+              <option value="individual">Individual SI Basis (Incl. Parents / In-laws)</option>
+            </select>
+          </div>
+          <div class="field" id="floaterThreshField">
+            <label>Aggregate Threshold (Deductible)</label>
+            <select id="floaterThreshold" onchange="syncFloaterSiOptions(); calculatePremium();"></select>
+          </div>
+          <div class="field" id="floaterSiField">
+            <label>Super Top-Up Sum Insured (₹)</label>
+            <select id="floaterSi" onchange="calculatePremium()"></select>
+          </div>
+          <div class="field">
+            <label>Channel / Staff Discount</label>
+            <select id="channelDisc" onchange="calculatePremium()">
+              <option value="0">Standard / Agent Channel (0%)</option>
+              <option value="10">Online Website Purchase / Renewal (10%)</option>
+              <option value="15">UIIC Working / Retired Staff Direct (15%)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Underwriting PED Loading % (if counter-offered)</label>
+            <input type="number" id="uwLoadPct" value="0" min="0" max="200" step="5" oninput="calculatePremium()" />
+          </div>
+        </div>
+
+        <div class="form-grid" style="margin-bottom: 14px;">
+          <div class="check-row">
+            <input type="checkbox" id="optDailyCash" onchange="calculatePremium()" />
+            <label for="optDailyCash"><strong>Daily Cash Allowance</strong> (₹500 / ₹1,000 / ₹2,000 per day by Threshold)</label>
+          </div>
+          <div class="check-row">
+            <input type="checkbox" id="showRenewalThresh" onchange="initThresholdSelectors(); renderMembers(); calculatePremium();" />
+            <label for="showRenewalThresh">Include Renewal-Only Thresholds (₹2 Lakhs & ₹3 Lakhs)</label>
+          </div>
+        </div>
+
+        <div class="section-title">
+          <span>Insured Family Members (<span id="memberCount">1</span>/6)</span>
+          <button class="btn btn-accent" onclick="addMember()">+ Add Member</button>
+        </div>
+
+        <div id="membersContainer"></div>
+      </div>
+
+      <div>
+        <div class="summary-card">
+          <div class="total-box">
+            <div class="lbl">Total Annual Payable Premium</div>
+            <div class="amt" id="finalPremium">₹0</div>
+            <div class="sub">GST: ₹0 (Exempt for Health Insurance in India)</div>
+          </div>
+
+          <div id="uwStatusBox"></div>
+
+          <table style="margin-top: 12px;">
+            <thead>
+              <tr>
+                <th>Item / Member</th>
+                <th class="num">Threshold / SI</th>
+                <th class="num">Base</th>
+                <th class="num">Net (₹)</th>
+              </tr>
+            </thead>
+            <tbody id="breakdownBody"></tbody>
+          </table>
+
+          <table>
+            <tbody>
+              <tr><td>Gross Base + Underwriting Loading</td><td class="num" id="sumGross">₹0</td></tr>
+              <tr><td>Family Discount (5% Individual &gt;1 member)</td><td class="num" id="sumFamDisc">- ₹0</td></tr>
+              <tr><td>Online (10%) / UIIC Staff (15%) Discount</td><td class="num" id="sumChanDisc">- ₹0</td></tr>
+              <tr><td>Optional Daily Cash Allowance (No Disc/Load)</td><td class="num" id="sumOpt">₹0</td></tr>
+              <tr><td>GST (0% Exempt)</td><td class="num">₹0</td></tr>
+              <tr><th>Net Annual Premium</th><th class="num" id="sumFinal">₹0</th></tr>
+            </tbody>
+          </table>
+
+          <div style="display: flex; gap: 8px; margin-top: 12px;">
+            <button class="btn btn-primary" style="flex:1;" onclick="copyQuote()">Copy Quote</button>
+            <button class="btn" style="flex:1;" onclick="window.print()">Print / PDF</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: DOUBTS & CLAIM SIMULATOR -->
+  <div id="panelFaq" class="panel hidden">
+    <div class="grid-2" style="margin-bottom: 16px;">
+      <div class="tool-box">
+        <div class="section-title">How Aggregate Threshold Works (Claim Simulator)</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+          <div>
+            <label style="font-size:0.75rem;font-weight:600;color:var(--muted);">Opted Threshold (₹)</label>
+            <input type="number" id="simThresh" value="500000" step="100000" style="width:100%;padding:7px;border:1px solid var(--border);border-radius:6px;" oninput="runClaimSim()" />
+          </div>
+          <div>
+            <label style="font-size:0.75rem;font-weight:600;color:var(--muted);">Super Top-Up SI (₹)</label>
+            <input type="number" id="simSi" value="1500000" step="100000" style="width:100%;padding:7px;border:1px solid var(--border);border-radius:6px;" oninput="runClaimSim()" />
+          </div>
+          <div>
+            <label style="font-size:0.75rem;font-weight:600;color:var(--muted);">Hospitalisation 1 Bill (₹)</label>
+            <input type="number" id="simBill1" value="350000" step="25000" style="width:100%;padding:7px;border:1px solid var(--border);border-radius:6px;" oninput="runClaimSim()" />
+          </div>
+          <div>
+            <label style="font-size:0.75rem;font-weight:600;color:var(--muted);">Hospitalisation 2 Bill (₹)</label>
+            <input type="number" id="simBill2" value="600000" step="25000" style="width:100%;padding:7px;border:1px solid var(--border);border-radius:6px;" oninput="runClaimSim()" />
+          </div>
+        </div>
+        <div id="simResult" style="font-size:0.84rem;"></div>
+      </div>
+
+      <div class="tool-box">
+        <div class="section-title">Pre-Acceptance Medical Check-Up Rules</div>
+        <div style="font-size:0.84rem; color:#334155;">
+          <p style="margin-bottom:6px;"><strong>Required at Proposer's Cost (50% reimbursed on acceptance) for:</strong></p>
+          <ul style="padding-left:18px; line-height:1.55;">
+            <li>Fresh entrants with adverse medical history</li>
+            <li>Fresh entrants aged <strong>above 60 years</strong> (entry allowed up to 65 yrs)</li>
+            <li>Persons aged <strong>above 60 years</strong> with a break in insurance</li>
+            <li>Members requesting Sum Insured enhancement at renewal</li>
+          </ul>
+          <p style="margin-top:6px; font-size:0.8rem; color:var(--muted);">Reports valid for 30 days: Physical Exam (MD/MS), CBC, Urine R/M, HbA1c, Lipid Profile, Serum Creatinine, SGOT/SGPT, ECG.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Super Top-Up Medicare Policy (STUMP) Knowledge Base</div>
+    <input type="text" id="faqFilter" class="faq-search" placeholder="Search doubts (e.g., threshold, room rent, modern treatment, waiting period, floater, parents-in-law)..." oninput="renderFaqs()" />
+    <div id="faqList"></div>
+  </div>
+</div>
+
+<script>
+  // EXACT STUMP RATE TABLES (EXCL. GST)
+  // Age Bands: 0-35, 36-45, 46-60, 61-65, 66-70, 71-75, 75+
+  const THRESHOLD_SI_MAP = {
+    200000:  [300000, 500000],
+    300000:  [300000, 500000, 700000],
+    500000:  [500000, 1000000, 1500000, 2000000, 4500000, 7000000, 9500000],
+    1000000: [1000000, 1500000, 2000000, 4000000, 6500000, 9000000],
+    1500000: [1500000, 3500000, 6000000, 8500000],
+    2000000: [2000000, 3000000, 5500000, 8000000],
+    2500000: [2500000, 5000000, 7500000]
+  };
+
+  const RATES_INDIVIDUAL = {
+    200000: {
+      300000:  [1270, 1618, 2432, 4466, 5104, 5582, 7178],
+      500000:  [1754, 2234, 3366, 6160, 7040, 7700, 9900]
+    },
+    300000: {
+      300000:  [1028, 1310, 1964, 3416, 3922, 4428, 5692],
+      500000:  [1392, 1772, 2712, 4752, 5456, 6160, 7920],
+      700000:  [1754, 2234, 3366, 5940, 6820, 7700, 9900]
+    },
+    500000: {
+      500000:  [1046, 1254, 2024, 3718, 4148, 5006, 6436],
+      1000000: [2036, 2442, 4048, 7294, 8134, 9818, 12622],
+      1500000: [2860, 3432, 5720, 10296, 11484, 13860, 17820],
+      2000000: [3432, 4118, 6864, 12356, 13780, 16632, 21384],
+      4500000: [4720, 5662, 9438, 16988, 18948, 22870, 29404],
+      7000000: [5434, 6520, 10868, 19562, 21820, 26334, 33858],
+      9500000: [6006, 7208, 12012, 21622, 24116, 29106, 37422]
+    },
+    1000000: {
+      1000000: [1542, 1850, 3066, 5526, 6162, 7438, 9562],
+      1500000: [1928, 2312, 3832, 6906, 7702, 9296, 11952],
+      2000000: [2160, 2590, 4292, 7736, 8626, 10412, 13386],
+      4000000: [2776, 3330, 5520, 9946, 11090, 13386, 17210],
+      6500000: [3238, 3884, 6440, 11602, 12940, 15618, 20078],
+      9000000: [3548, 4254, 7052, 12708, 14172, 17106, 21990]
+    },
+    1500000: {
+      1500000: [1460, 1752, 2904, 5232, 5834, 7042, 9054],
+      3500000: [2044, 2452, 4064, 7324, 8168, 9858, 12674],
+      6000000: [2410, 2890, 4790, 8632, 9626, 11620, 14938],
+      8500000: [2702, 3240, 5372, 9678, 10794, 13028, 16748]
+    },
+    2000000: {
+      2000000: [1526, 1830, 3036, 5468, 6098, 7362, 9464],
+      3000000: [1756, 2106, 3490, 6290, 7014, 8466, 10884],
+      5500000: [2214, 2654, 4400, 7930, 8844, 10674, 13722],
+      8000000: [2442, 2930, 4856, 8750, 9758, 11778, 15142]
+    },
+    2500000: {
+      2500000: [1188, 1424, 2360, 4254, 4742, 5724, 7360],
+      5000000: [1366, 1638, 2714, 4892, 5454, 6584, 8464],
+      7500000: [1544, 1852, 3068, 5530, 6166, 7442, 9568]
+    }
+  };
+
+  const RATES_FLOATER_2 = {
+    200000: {
+      300000:  [2058, 2618, 3928, 6578, 7590, 8856, 11386],
+      500000:  [2784, 3542, 5424, 9152, 10560, 12320, 15840]
+    },
+    300000: {
+      300000:  [1634, 2080, 3180, 5088, 5902, 7122, 9158],
+      500000:  [2238, 2850, 4302, 7012, 8134, 9818, 12622],
+      700000:  [2784, 3542, 5424, 8800, 10208, 12320, 15840]
+    },
+    500000: {
+      500000:  [1486, 1980, 3052, 5544, 6468, 8086, 10396],
+      1000000: [2920, 3894, 6106, 10824, 12628, 15786, 20296],
+      1500000: [4108, 5478, 8580, 15180, 17710, 22138, 28462],
+      2000000: [4930, 6574, 10296, 18216, 21252, 26566, 34154],
+      4500000: [6778, 9038, 14158, 25048, 29222, 36528, 46962],
+      7000000: [7806, 10408, 16302, 28842, 33650, 42062, 54078],
+      9500000: [8626, 11504, 18018, 31878, 37192, 46490, 59770]
+    },
+    1000000: {
+      1000000: [2212, 2950, 4626, 8200, 9566, 11958, 15374],
+      1500000: [2764, 3688, 5782, 10248, 11958, 14948, 19218],
+      2000000: [3096, 4130, 6476, 11478, 13392, 16742, 21524],
+      4000000: [3982, 5310, 8326, 14758, 17218, 21524, 27674],
+      6500000: [4644, 6194, 9714, 17218, 20088, 25112, 32286],
+      9000000: [5088, 6784, 10638, 18858, 22002, 27504, 35360]
+    },
+    1500000: {
+      1500000: [2094, 2794, 4380, 7764, 9058, 11322, 14558],
+      3500000: [2932, 3910, 6132, 10870, 12680, 15852, 20380],
+      6000000: [3456, 4608, 7226, 12810, 14944, 18682, 24020],
+      8500000: [3874, 5168, 8102, 14362, 16756, 20946, 26932]
+    },
+    2000000: {
+      2000000: [2190, 2920, 4578, 8116, 9468, 11836, 15218],
+      3000000: [2518, 3358, 5264, 9332, 10888, 13612, 17500],
+      5500000: [3174, 4234, 6638, 11768, 13728, 17162, 22066],
+      8000000: [3502, 4672, 7324, 12984, 15150, 18938, 24348]
+    },
+    2500000: {
+      2500000: [1702, 2270, 3560, 6312, 7364, 9204, 11834],
+      5000000: [1958, 2612, 4094, 7258, 8468, 10586, 13610],
+      7500000: [2214, 2952, 4628, 8204, 9572, 11966, 15384]
+    }
+  };
+
+  const RATES_FLOATER_MORE = {
+    200000: {
+      300000:  [2542, 3234, 4862, 8294, 9570, 11166, 14356],
+      500000:  [3510, 4466, 6732, 11440, 13200, 15400, 19800]
+    },
+    300000: {
+      300000:  [2058, 2618, 3928, 6326, 7338, 8856, 11386],
+      500000:  [2784, 3542, 5424, 8800, 10208, 12320, 15840],
+      700000:  [3510, 4466, 6732, 11000, 12760, 15400, 19800]
+    },
+    500000: {
+      500000:  [1882, 2508, 3796, 6864, 8008, 10010, 12870],
+      1000000: [3664, 4884, 7590, 13464, 15708, 19636, 25246],
+      1500000: [5148, 6864, 10726, 19008, 22176, 27720, 35640],
+      2000000: [6178, 8236, 12872, 22810, 26612, 33264, 42768],
+      4500000: [8494, 11326, 17698, 31364, 36590, 45738, 58806],
+      7000000: [9782, 13042, 20380, 36116, 42134, 52668, 67716],
+      9500000: [10810, 14414, 22524, 39916, 46570, 58212, 74844]
+    },
+    1000000: {
+      1000000: [2776, 3700, 5750, 10198, 11898, 14874, 19124],
+      1500000: [3470, 4624, 7186, 12748, 14874, 18592, 23904],
+      2000000: [3886, 5180, 8050, 14278, 16658, 20824, 26774],
+      4000000: [4996, 6660, 10348, 18358, 21418, 26774, 34422],
+      6500000: [5828, 7770, 12074, 21418, 24988, 31236, 40160],
+      9000000: [6384, 8510, 13224, 23458, 27368, 34210, 43984]
+    },
+    1500000: {
+      1500000: [2628, 3504, 5444, 9658, 11266, 14084, 18108],
+      3500000: [3680, 4904, 7622, 13520, 15774, 19718, 25352],
+      6000000: [4336, 5780, 8982, 15934, 18590, 23238, 29878],
+      8500000: [4862, 6480, 10072, 17866, 20844, 26056, 33500]
+    },
+    2000000: {
+      2000000: [2748, 3662, 5690, 10094, 11778, 14722, 18928],
+      3000000: [3160, 4212, 6544, 11610, 13544, 16930, 21768],
+      5500000: [3984, 5310, 8252, 14638, 17078, 21348, 27446],
+      8000000: [4396, 5860, 9106, 16152, 18844, 23556, 30286]
+    },
+    2500000: {
+      2500000: [2136, 2848, 4426, 7850, 9160, 11450, 14720],
+      5000000: [2456, 3276, 5090, 9028, 10534, 13168, 16930],
+      7500000: [2778, 3702, 5754, 10206, 11908, 14884, 19138]
+    }
+  };
+
+  // DAILY CASH ALLOWANCE RATES (EXCL. GST) - PAGE 6
+  const DAILY_CASH_IND = {
+    lt5: [9, 36, 73, 127, 182, 255, 318],
+    eq5: [18, 55, 91, 209, 309, 400, 455],
+    gt5: [27, 82, 164, 327, 473, 582, 727]
+  };
+  const DAILY_CASH_FLT = {
+    lt5: [55, 73, 127, 227, 309, 436, 545],
+    eq5: [73, 100, 182, 255, 400, 491, 582],
+    gt5: [91, 127, 236, 309, 545, 691, 818]
+  };
+
+  const FAQS = [
+    { q: "How does an Annual Aggregate Deductible (Super Top-Up) work?", a: "Unlike a regular Top-Up policy (which checks the threshold per single hospitalisation), Super Top-Up Medicare Policy adds up all admissible hospitalisation bills across the entire policy year. Once the cumulative covered medical expenses exceed the opted Threshold Limit (on an individual basis for Individual SI, or across the whole family for Family Floater), the policy pays all subsequent covered expenses up to the Super Top-Up Sum Insured." },
+    { q: "Who is eligible and what family relationships are covered?", a: "Entry Age: Adults 18 to 65 years (lifelong renewals beyond 65); Dependent Children 91 days to 18 years (continuing up to 26 years if unmarried/unemployed & dependent; no upper age limit for mentally challenged children). Individual SI Basis covers Self, Spouse, Dependent Children, Parents, and Parents-in-law. Family Floater Basis covers Self, Spouse, and Dependent Children (premium is based on the age of the eldest member)." },
+    { q: "Are there any Room Rent caps or Zonal Co-payments?", a: "No! Super Top-Up Medicare Policy has NO room rent sub-limit (actual room, boarding, nursing, and ICU/ICCU expenses are covered) and NO geographical zones or zonal co-payment across India." },
+    { q: "What are the Pre/Post-Hospitalisation, Home Care, Ambulance & Modern Treatment limits?", a: "Linked to Threshold: For Threshold < ₹10 Lakhs: Pre-hospitalisation 30 days, Post-hospitalisation 60 days, Home Care Treatment up to ₹15,000/incident (max ₹30,000/policy on floater). For Threshold ≥ ₹10 Lakhs: Pre-hospitalisation 60 days, Post-hospitalisation 90 days, Home Care Treatment up to ₹30,000/incident (max ₹60,000/policy on floater). Road Ambulance: up to ₹2,500/event and ₹5,000/policy year. Modern Treatments (12 procedures): covered with specific sub-limits (10% to 75% of SI)." },
+    { q: "What are the Waiting Periods in Super Top-Up Medicare Policy?", a: "Pre-Existing Diseases (PED - Excl01): 36 months of continuous coverage. (Note: Unlike base policies, STUMP does not list separate 24-month specified disease waiting periods in Section 7.A, though standard exclusions and 36-month PED waiting periods apply)." },
+    { q: "How does Cashless Claim work for the first claim crossing the Threshold?", a: "For the first claim in a policy year where cumulative medical expenses cross the Threshold, cashless authorization is available provided you submit prior hospitalisation bills/settlement proofs substantiating that the Threshold has already been crossed (or is being crossed in that admission). All subsequent claims in that year follow standard cashless pre-authorization (1 hr pre-auth TAT, 3 hrs final discharge TAT)." },
+    { q: "What Discounts & Optional Covers are available?", a: "1) Family Discount: 5% on Individual SI policies covering >1 family member. 2) Online Discount: 10% for fresh/renewal purchases directly via UIIC's website. 3) UIIC Staff Discount: 15% for working/retired UIIC employees buying directly from office (cannot be combined with Online Discount). 4) Optional Hospital Daily Cash Allowance: ₹500/day (Threshold < ₹5L), ₹1,000/day (Threshold ₹5L), or ₹2,000/day (Threshold > ₹5L) after a 24-hour deductible." },
+    { q: "What are the Free-Look, Grace Period, Moratorium, and Mid-Term Inclusion rules?", a: "Free-Look Period: 30 days on new policies. Grace Period: 30 days for renewal. Moratorium Period: 60 continuous months. Mid-term inclusion (at pro-rata premium): Newly married spouse within 60 days of marriage, parents of newly married spouse within 60 days of marriage, newborn baby (91–180 days), or adopted child (91 days–18 yrs within 60 days of adoption)." }
+  ];
+
+  let members = [
+    { id: 1, relation: "Self", age: 35, threshold: 500000, si: 1500000 },
+    { id: 2, relation: "Spouse", age: 32, threshold: 500000, si: 1500000 }
+  ];
+
+  function getAgeBandIndex(age) {
+    if (age <= 35) return 0;
+    if (age <= 45) return 1;
+    if (age <= 60) return 2;
+    if (age <= 65) return 3;
+    if (age <= 70) return 4;
+    if (age <= 75) return 5;
+    return 6;
+  }
+
+  function formatLakhs(val) {
+    return "₹" + (val / 100000) + "L";
+  }
+
+  function getAvailableThresholds() {
+    const showLegacy = document.getElementById("showRenewalThresh").checked;
+    return showLegacy ? [200000, 300000, 500000, 1000000, 1500000, 2000000, 2500000] : [500000, 1000000, 1500000, 2000000, 2500000];
+  }
+
+  function initThresholdSelectors() {
+    const thresholds = getAvailableThresholds();
+    const fThreshSel = document.getElementById("floaterThreshold");
+    const curVal = parseInt(fThreshSel.value, 10) || 500000;
+    fThreshSel.innerHTML = thresholds.map(t => `<option value="${t}" ${t === curVal ? "selected" : ""}>₹${t.toLocaleString("en-IN")} (${formatLakhs(t)})</option>`).join("");
+    if (!thresholds.includes(curVal)) fThreshSel.value = "500000";
+    syncFloaterSiOptions();
+  }
+
+  function syncFloaterSiOptions() {
+    const t = parseInt(document.getElementById("floaterThreshold").value, 10);
+    const siList = THRESHOLD_SI_MAP[t] || [500000];
+    const fSiSel = document.getElementById("floaterSi");
+    const curSi = parseInt(fSiSel.value, 10);
+    fSiSel.innerHTML = siList.map(s => `<option value="${s}" ${s === curSi ? "selected" : ""}>₹${s.toLocaleString("en-IN")} (${formatLakhs(s)})</option>`).join("");
+    if (!siList.includes(curSi)) fSiSel.value = String(siList[0]);
+  }
+
+  function renderMembers() {
+    document.getElementById("memberCount").textContent = members.length;
+    const basis = document.getElementById("coverBasis").value;
+    document.getElementById("floaterThreshField").classList.toggle("hidden", basis !== "floater");
+    document.getElementById("floaterSiField").classList.toggle("hidden", basis !== "floater");
+
+    const thresholds = getAvailableThresholds();
+    const container = document.getElementById("membersContainer");
+
+    container.innerHTML = members.map((m, idx) => {
+      if (!thresholds.includes(m.threshold)) m.threshold = 500000;
+      const validSis = THRESHOLD_SI_MAP[m.threshold];
+      if (!validSis.includes(m.si)) m.si = validSis[0];
+
+      return `
+        <div class="member-card">
+          <div class="member-head">
+            <strong>Member ${idx + 1} (${m.relation})</strong>
+            ${members.length > 1 ? `<button class="btn btn-danger" onclick="removeMember(${m.id})">Remove</button>` : ""}
+          </div>
+          <div class="form-grid" style="margin-bottom:0;">
+            <div class="field">
+              <label>Relationship</label>
+              <select onchange="updateMember(${m.id}, 'relation', this.value)">
+                <option value="Self" ${m.relation === "Self" ? "selected" : ""}>Self</option>
+                <option value="Spouse" ${m.relation === "Spouse" ? "selected" : ""}>Spouse</option>
+                <option value="Child" ${m.relation === "Child" ? "selected" : ""}>Dependent Child</option>
+                <option value="Parent" ${m.relation === "Parent" ? "selected" : ""}>Parent (Individual Only)</option>
+                <option value="Parent-in-law" ${m.relation === "Parent-in-law" ? "selected" : ""}>Parent-in-law (Individual Only)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Completed Age (Years)</label>
+              <input type="number" min="0" max="99" value="${m.age}" oninput="updateMember(${m.id}, 'age', parseInt(this.value)||0)" />
+            </div>
+            ${basis === "individual" ? `
+              <div class="field">
+                <label>Member Threshold</label>
+                <select onchange="updateMember(${m.id}, 'threshold', parseInt(this.value,10))">
+                  ${thresholds.map(t => `<option value="${t}" ${m.threshold === t ? "selected" : ""}>${formatLakhs(t)} (₹${t.toLocaleString("en-IN")})</option>`).join("")}
+                </select>
+              </div>
+              <div class="field">
+                <label>Member Sum Insured</label>
+                <select onchange="updateMember(${m.id}, 'si', parseInt(this.value,10))">
+                  ${validSis.map(s => `<option value="${s}" ${m.si === s ? "selected" : ""}>${formatLakhs(s)} (₹${s.toLocaleString("en-IN")})</option>`).join("")}
+                </select>
+              </div>
+            ` : ""}
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function addMember() {
+    if (members.length >= 6) return alert("Maximum 6 insured persons allowed per proposal form.");
+    const nextId = members.length ? Math.max(...members.map(m => m.id)) + 1 : 1;
+    const rel = members.length === 1 ? "Spouse" : "Child";
+    const age = rel === "Spouse" ? 30 : 8;
+    members.push({ id: nextId, relation: rel, age: age, threshold: 500000, si: 1500000 });
+    renderMembers();
+    calculatePremium();
+  }
+
+  function removeMember(id) {
+    members = members.filter(m => m.id !== id);
+    renderMembers();
+    calculatePremium();
+  }
+
+  function updateMember(id, field, val) {
+    const m = members.find(x => x.id === id);
+    if (!m) return;
+    m[field] = val;
+    if (field === "relation") {
+      if (val === "Child") m.age = 8;
+      else if (val === "Parent" || val === "Parent-in-law") m.age = 58;
+      else m.age = 34;
+    }
+    renderMembers();
+    calculatePremium();
+  }
+
+  function getDailyCashRate(isFloater, thresh, ageBandIdx) {
+    const tbl = isFloater ? DAILY_CASH_FLT : DAILY_CASH_IND;
+    const key = thresh < 500000 ? "lt5" : (thresh === 500000 ? "eq5" : "gt5");
+    return tbl[key][ageBandIdx];
+  }
+
+  function calculatePremium() {
+    const basis = document.getElementById("coverBasis").value;
+    const chanDiscPct = parseFloat(document.getElementById("channelDisc").value) || 0;
+    const uwLoadPct = parseFloat(document.getElementById("uwLoadPct").value) || 0;
+    const optDailyCash = document.getElementById("optDailyCash").checked;
+
+    let alerts = [];
+    const adults = members.filter(m => m.relation === "Self" || m.relation === "Spouse");
+    const parents = members.filter(m => m.relation === "Parent" || m.relation === "Parent-in-law");
+    if (adults.length > 2) alerts.push("Maximum 2 core adults (Self + Spouse) allowed.");
+    members.forEach((m, i) => {
+      if (m.relation !== "Child" && m.age < 18) alerts.push(`M${i+1}: Adult minimum entry age is 18.`);
+      if (m.age > 65) alerts.push(`M${i+1}: Age > 65 is allowed for Renewals only (fresh entry max 65).`);
+    });
+
+    let grossTotal = 0;
+    let afterFamTotal = 0;
+    let finalBaseTotal = 0;
+    let optTotal = 0;
+    let rowsHtml = "";
+
+    if (basis === "floater") {
+      if (members.length < 2) alerts.push("Family Floater requires at least 2 members (Self, Spouse, Dependent Children).");
+      if (parents.length > 0) alerts.push("Parents / Parents-in-law are eligible under Individual SI basis only (not Floater).");
+
+      const fThresh = parseInt(document.getElementById("floaterThreshold").value, 10);
+      const fSi = parseInt(document.getElementById("floaterSi").value, 10);
+      const eldestAge = Math.max(...members.map(m => m.age));
+      const bandIdx = getAgeBandIndex(eldestAge);
+      const table = members.length === 2 ? RATES_FLOATER_2 : RATES_FLOATER_MORE;
+      const baseRate = table[fThresh][fSi][bandIdx];
+
+      const loaded = Math.round(baseRate * (1 + uwLoadPct / 100));
+      const net = Math.round(loaded * (1 - chanDiscPct / 100));
+
+      grossTotal = loaded;
+      afterFamTotal = loaded;
+      finalBaseTotal = net;
+
+      if (optDailyCash) {
+        optTotal = getDailyCashRate(true, fThresh, bandIdx);
+      }
+
+      rowsHtml = `
+        <tr>
+          <td>Floater (${members.length} members, eldest ${eldestAge}y)</td>
+          <td class="num">${formatLakhs(fThresh)} / ${formatLakhs(fSi)}</td>
+          <td class="num">₹${baseRate.toLocaleString("en-IN")}</td>
+          <td class="num"><strong>₹${net.toLocaleString("en-IN")}</strong></td>
+        </tr>
+      `;
+    } else {
+      const famDiscPct = members.length > 1 ? 5 : 0;
+
+      members.forEach((m, idx) => {
+        const bandIdx = getAgeBandIndex(m.age);
+        const baseRate = RATES_INDIVIDUAL[m.threshold][m.si][bandIdx];
+        const loaded = Math.round(baseRate * (1 + uwLoadPct / 100));
+        const afterFam = loaded * (1 - famDiscPct / 100);
+        const net = Math.round(afterFam * (1 - chanDiscPct / 100));
+
+        grossTotal += loaded;
+        afterFamTotal += Math.round(afterFam);
+        finalBaseTotal += net;
+
+        if (optDailyCash) {
+          optTotal += getDailyCashRate(false, m.threshold, bandIdx);
+        }
+
+        rowsHtml += `
+          <tr>
+            <td>M${idx+1} (${m.relation}, ${m.age}y)</td>
+            <td class="num">${formatLakhs(m.threshold)} / ${formatLakhs(m.si)}</td>
+            <td class="num">₹${baseRate.toLocaleString("en-IN")}</td>
+            <td class="num"><strong>₹${net.toLocaleString("en-IN")}</strong></td>
+          </tr>
+        `;
+      });
+    }
+
+    const grandTotal = finalBaseTotal + optTotal;
+
+    document.getElementById("breakdownBody").innerHTML = rowsHtml;
+    document.getElementById("sumGross").textContent = "₹" + grossTotal.toLocaleString("en-IN");
+    document.getElementById("sumFamDisc").textContent = "- ₹" + (grossTotal - afterFamTotal).toLocaleString("en-IN");
+    document.getElementById("sumChanDisc").textContent = "- ₹" + (afterFamTotal - finalBaseTotal).toLocaleString("en-IN");
+    document.getElementById("sumOpt").textContent = "₹" + optTotal.toLocaleString("en-IN");
+    document.getElementById("sumFinal").textContent = "₹" + grandTotal.toLocaleString("en-IN");
+    document.getElementById("finalPremium").textContent = "₹" + grandTotal.toLocaleString("en-IN");
+
+    let statusHtml = `<div class="alert alert-ok"><strong>Pan-India Single Zone:</strong> 0% Zonal Co-pay • 0% GST Applied.</div>`;
+    if (alerts.length) {
+      statusHtml += `<div class="alert alert-warn">${alerts.join("<br/>")}</div>`;
+    }
+    document.getElementById("uwStatusBox").innerHTML = statusHtml;
+  }
+
+  function loadPreset(num) {
+    document.getElementById("showRenewalThresh").checked = false;
+    document.getElementById("optDailyCash").checked = false;
+    document.getElementById("channelDisc").value = "0";
+    document.getElementById("uwLoadPct").value = "0";
+    initThresholdSelectors();
+
+    if (num === 1 || num === 2) {
+      // Prospectus Illustration 1: Ages 45, 40, 21, 18 | Threshold ₹5L | SI ₹5L
+      document.getElementById("coverBasis").value = num === 1 ? "floater" : "individual";
+      document.getElementById("floaterThreshold").value = "500000";
+      syncFloaterSiOptions();
+      document.getElementById("floaterSi").value = "500000";
+      members = [
+        { id: 1, relation: "Self", age: 45, threshold: 500000, si: 500000 },
+        { id: 2, relation: "Spouse", age: 40, threshold: 500000, si: 500000 },
+        { id: 3, relation: "Child", age: 21, threshold: 500000, si: 500000 },
+        { id: 4, relation: "Child", age: 18, threshold: 500000, si: 500000 }
+      ];
+    } else {
+      // Prospectus Illustration 2: Self 59 & Spouse 56 | Threshold ₹5L | SI ₹5L (Floater = ₹3,052)
+      document.getElementById("coverBasis").value = "floater";
+      document.getElementById("floaterThreshold").value = "500000";
+      syncFloaterSiOptions();
+      document.getElementById("floaterSi").value = "500000";
+      members = [
+        { id: 1, relation: "Self", age: 59, threshold: 500000, si: 500000 },
+        { id: 2, relation: "Spouse", age: 56, threshold: 500000, si: 500000 }
+      ];
+    }
+    renderMembers();
+    calculatePremium();
+  }
+
+  function copyQuote() {
+    const total = document.getElementById("finalPremium").textContent;
+    const basis = document.getElementById("coverBasis").options[document.getElementById("coverBasis").selectedIndex].text;
+    const text = `United India Insurance - Super Top-Up Medicare Policy Quote\nBasis: ${basis} | Members: ${members.length}\nGST: ₹0 (Exempt) | Total Annual Premium: ${total}`;
+    navigator.clipboard.writeText(text).then(() => alert("Quote copied to clipboard!"));
+  }
+
+  function switchTab(tab) {
+    document.getElementById("panelCalc").classList.toggle("hidden", tab !== "calc");
+    document.getElementById("panelFaq").classList.toggle("hidden", tab !== "faq");
+    document.getElementById("tabBtnCalc").classList.toggle("active", tab === "calc");
+    document.getElementById("tabBtnFaq").classList.toggle("active", tab === "faq");
+  }
+
+  function runClaimSim() {
+    const thresh = parseFloat(document.getElementById("simThresh").value) || 0;
+    const si = parseFloat(document.getElementById("simSi").value) || 0;
+    const b1 = parseFloat(document.getElementById("simBill1").value) || 0;
+    const b2 = parseFloat(document.getElementById("simBill2").value) || 0;
+
+    const totalBills = b1 + b2;
+    const excessOverThresh = Math.max(0, totalBills - thresh);
+    const stumpPayable = Math.min(si, excessOverThresh);
+    const remainingSi = Math.max(0, si - stumpPayable);
+
+    document.getElementById("simResult").innerHTML = `
+      <div class="alert alert-ok" style="margin-top:4px;">
+        <strong>Total Covered Bills in Year:</strong> ₹${totalBills.toLocaleString("en-IN")}<br/>
+        <strong>Less Aggregate Threshold:</strong> - ₹${thresh.toLocaleString("en-IN")}<br/>
+        <strong>Payable by Super Top-Up Policy:</strong> <strong>₹${stumpPayable.toLocaleString("en-IN")}</strong> (Balance STUMP SI: ₹${remainingSi.toLocaleString("en-IN")})
+      </div>
+    `;
+  }
+
+  function renderFaqs() {
+    const q = (document.getElementById("faqFilter").value || "").toLowerCase();
+    const list = document.getElementById("faqList");
+    const filtered = FAQS.filter(f => f.q.toLowerCase().includes(q) || f.a.toLowerCase().includes(q));
+    list.innerHTML = filtered.map(f => `
+      <div class="faq-item">
+        <div class="faq-q">${f.q}</div>
+        <div class="faq-a">${f.a}</div>
+      </div>
+    `).join("") || `<p style="color:var(--muted);">No matching topics found.</p>`;
+  }
+
+  // Initialize
+  initThresholdSelectors();
+  renderMembers();
+  calculatePremium();
+  runClaimSim();
+  renderFaqs();
+</script>
+</body>
+</html>
